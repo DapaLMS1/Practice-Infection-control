@@ -3,191 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Improved Flip Card</title>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Open Sans', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f4f8;
     }
 
-    .flip-card {
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #532A8C;
+      text-align: center;
+    }
+
+    .card {
+      width: 360px;
+      height: 240px;
       perspective: 1000px;
-      width: 100%;
-      max-width: 480px;
-      height: 260px;
-      margin: auto;
+      margin-bottom: 20px;
     }
 
-    .flip-card-inner {
+    .card-inner {
       position: relative;
       width: 100%;
       height: 100%;
-      transition: transform 0.8s ease-in-out;
+      transition: transform 0.8s;
       transform-style: preserve-3d;
     }
 
-    .flipped .flip-card-inner {
+    .card.flipped .card-inner {
       transform: rotateY(180deg);
     }
 
-    .flip-card-front,
-    .flip-card-back {
+    .card-front, .card-back {
       position: absolute;
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      border-radius: 0.75rem;
-      padding: 1rem;
+      flex-direction: column;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      font-weight: normal;
       text-align: center;
     }
 
-    .flip-card-front {
+    .card-front {
       background-color: #F2F2F2;
       color: #532A8C;
     }
 
-    .flip-card-back {
+    .card-back {
       background-color: #C3ACE8;
-      transform: rotateY(180deg);
       color: #000;
+      transform: rotateY(180deg);
     }
 
-    .hidden {
-      display: none;
+    .flip-button, .next-button, .restart-button {
+      background-color: #532A8C;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .flip-button:hover, .next-button:hover, .restart-button:hover {
+      background-color: #7ABF49;
     }
   </style>
 </head>
-<body class="bg-gray-100 p-6">
-
-  <div class="text-center mb-6">
-    <h2 class="text-2xl font-bold text-[#532A8C] mb-1">Reflection Activity: Your Practice & Infection Control</h2>
-    <p class="text-sm text-gray-700">Click <strong>"Flip"</strong> to reveal the answer. Then click <strong>"Next"</strong> to continue.</p>
+<body>
+  <div class="title">Infection Control Reflection Cards</div>
+  <div class="card" id="flipCard">
+    <div class="card-inner">
+      <div class="card-front" id="cardFront"></div>
+      <div class="card-back" id="cardBack"></div>
+    </div>
   </div>
-
-  <div id="card-container" class="flex flex-col items-center space-y-6">
-
-    <!-- CARD 0 -->
-    <div class="card-block" id="card-0">
-      <div class="flip-card rounded-lg shadow-lg overflow-hidden">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <h3 class="text-lg font-bold mb-2">Cleaning First:</h3>
-            <p class="text-base">Why is it essential to <strong>clean</strong> a surface thoroughly <em>before</em> you disinfect it?</p>
-          </div>
-          <div class="flip-card-back">
-            <h3 class="text-lg font-bold mb-2">Think About It:</h3>
-            <p class="text-base">Organic material shields germs. Cleaning removes this barrier, allowing disinfectants to work effectively.</p>
-          </div>
-        </div>
-      </div>
-      <div class="text-center mt-4 space-x-2">
-        <button class="flip-btn font-bold bg-[#532A8C] text-white px-5 py-2 rounded" onclick="flipCard(0)">Flip</button>
-        <button class="next-btn hidden font-bold bg-[#7ABF49] hover:bg-[#96BF78] text-white px-5 py-2 rounded" onclick="nextCard()">Next</button>
-      </div>
-    </div>
-
-    <!-- CARD 1 -->
-    <div class="card-block hidden" id="card-1">
-      <div class="flip-card rounded-lg shadow-lg overflow-hidden">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <h3 class="text-lg font-bold mb-2">Disinfection Time:</h3>
-            <p class="text-base">Do you allow enough <strong>wet contact time</strong> for disinfectants to work?</p>
-          </div>
-          <div class="flip-card-back">
-            <h3 class="text-lg font-bold mb-2">Consider This:</h3>
-            <p class="text-base">Disinfectants need time to kill pathogens. If surfaces dry too fast, they may remain contaminated.</p>
-          </div>
-        </div>
-      </div>
-      <div class="text-center mt-4 space-x-2">
-        <button class="flip-btn font-bold bg-[#532A8C] text-white px-5 py-2 rounded" onclick="flipCard(1)">Flip</button>
-        <button class="next-btn hidden font-bold bg-[#7ABF49] hover:bg-[#96BF78] text-white px-5 py-2 rounded" onclick="nextCard()">Next</button>
-      </div>
-    </div>
-
-    <!-- CARD 2 -->
-    <div class="card-block hidden" id="card-2">
-      <div class="flip-card rounded-lg shadow-lg overflow-hidden">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <h3 class="text-lg font-bold mb-2">Using Barriers:</h3>
-            <p class="text-base">What do you cover with an <strong>impervious barrier</strong>? Why?</p>
-          </div>
-          <div class="flip-card-back">
-            <h3 class="text-lg font-bold mb-2">Reflect On:</h3>
-            <p class="text-base">Barriers protect equipment from contamination, especially in hard-to-clean areas.</p>
-          </div>
-        </div>
-      </div>
-      <div class="text-center mt-4 space-x-2">
-        <button class="flip-btn font-bold bg-[#532A8C] text-white px-5 py-2 rounded" onclick="flipCard(2)">Flip</button>
-        <button class="next-btn hidden font-bold bg-[#7ABF49] hover:bg-[#96BF78] text-white px-5 py-2 rounded" onclick="nextCard()">Next</button>
-      </div>
-    </div>
-
-    <!-- CARD 3 -->
-    <div class="card-block hidden" id="card-3">
-      <div class="flip-card rounded-lg shadow-lg overflow-hidden">
-        <div class="flip-card-inner">
-          <div class="flip-card-front">
-            <h3 class="text-lg font-bold mb-2">One Improvement:</h3>
-            <p class="text-base">What’s <strong>one thing</strong> you could improve in your infection control routine?</p>
-          </div>
-          <div class="flip-card-back">
-            <h3 class="text-lg font-bold mb-2">Your Action:</h3>
-            <p class="text-base">Think of a daily habit—barrier use, wet time, or surface prep—that you can tighten up today.</p>
-          </div>
-        </div>
-      </div>
-      <div class="text-center mt-4">
-        <button class="flip-btn font-bold bg-[#532A8C] text-white px-5 py-2 rounded" onclick="flipCard(3)">Flip</button>
-        <button class="restart-btn hidden font-bold bg-[#532A8C] hover:bg-[#9D8ABB] text-white px-5 py-2 rounded" onclick="restart()">Start Again</button>
-      </div>
-    </div>
-
-  </div>
+  <button class="next-button" onclick="nextCard()" id="nextButton">Next</button>
 
   <script>
-    let currentCardIndex = 0;
-
-    function flipCard(index) {
-      const card = document.getElementById(`card-${index}`);
-      card.classList.add('flipped');
-      card.querySelector('.flip-btn').classList.add('hidden');
-
-      if (index < 3) {
-        card.querySelector('.next-btn').classList.remove('hidden');
-      } else {
-        card.querySelector('.restart-btn').classList.remove('hidden');
+    let currentCard = 0;
+    const cards = [
+      {
+        front: "<h3>Cleaning First:</h3><p>Why is it essential to <strong>clean</strong> a surface thoroughly <em>before</em> you disinfect it?</p><button class='flip-button' onclick='flipCard()'>Flip</button>",
+        back: "<h3>Think About It:</h3><p>Organic material shields germs. Cleaning removes this barrier, allowing disinfectants to work effectively.</p>"
+      },
+      {
+        front: "<h3>Disinfection Time:</h3><p>Do you allow enough <strong>wet contact time</strong> for disinfectants to work?</p><button class='flip-button' onclick='flipCard()'>Flip</button>",
+        back: "<h3>Consider This:</h3><p>Disinfectants need time to kill pathogens. If surfaces dry too fast, they may remain contaminated.</p>"
+      },
+      {
+        front: "<h3>Using Barriers:</h3><p>What do you cover with an <strong>impervious barrier</strong>? Why?</p><button class='flip-button' onclick='flipCard()'>Flip</button>",
+        back: "<h3>Reflect On:</h3><p>Barriers protect equipment from contamination, especially in hard-to-clean areas.</p>"
+      },
+      {
+        front: "<h3>One Improvement:</h3><p>What’s <strong>one thing</strong> you could improve in your infection control routine?</p><button class='flip-button' onclick='flipCard()'>Flip</button>",
+        back: "<h3>Your Action:</h3><p>Think of a daily habit—barrier use, wet time, or surface prep—that you can tighten up today.</p>"
       }
+    ];
+
+    function flipCard() {
+      document.getElementById('flipCard').classList.add('flipped');
+      document.getElementById('nextButton').innerText = currentCard === cards.length - 1 ? 'Start Again' : 'Next';
+      document.getElementById('nextButton').style.display = 'inline-block';
     }
 
     function nextCard() {
-      const current = document.getElementById(`card-${currentCardIndex}`);
-      current.classList.remove('flipped');
-      current.classList.add('hidden');
-      currentCardIndex++;
-      const next = document.getElementById(`card-${currentCardIndex}`);
-      next.classList.remove('hidden');
+      document.getElementById('flipCard').classList.remove('flipped');
+      currentCard = (currentCard + 1) % cards.length;
+      document.getElementById('cardFront').innerHTML = cards[currentCard].front;
+      document.getElementById('cardBack').innerHTML = cards[currentCard].back;
+      document.getElementById('nextButton').style.display = 'none';
     }
 
-    function restart() {
-      const current = document.getElementById(`card-${currentCardIndex}`);
-      current.classList.remove('flipped');
-      current.classList.add('hidden');
-
-      currentCardIndex = 0;
-      const first = document.getElementById(`card-0`);
-      first.classList.remove('hidden');
-      first.classList.remove('flipped');
-      first.querySelector('.flip-btn').classList.remove('hidden');
-    }
+    // Initialize first card
+    nextCard();
   </script>
-
 </body>
 </html>
-
