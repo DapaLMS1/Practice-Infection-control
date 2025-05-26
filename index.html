@@ -59,13 +59,13 @@
 
     <!-- CARD 0 -->
     <div class="card-block" id="card-0">
-      <div class="flip-card w-full max-w-md overflow-hidden mx-auto">
+      <div class="flip-card w-full max-w-xl overflow-hidden mx-auto">
         <div class="flip-card-inner">
-          <div class="flip-card-front bg-[#F2F2F2] text-[#532A8C]">
+          <div class="flip-card-front bg-[#F2F2F2] text-[#532A8C] w-full min-w-[350px]">
             <h3 class="text-base font-semibold mb-2">Cleaning First:</h3>
             <p class="text-sm text-center">Why is it essential to <strong>clean</strong> a surface thoroughly <em>before</em> you disinfect it?</p>
           </div>
-          <div class="flip-card-back bg-[#C3ACE8] text-black">
+          <div class="flip-card-back bg-[#C3ACE8] text-black w-full min-w-[350px]">
             <h3 class="text-base font-semibold mb-2">Think About It:</h3>
             <p class="text-sm text-center">Organic material shields germs. Cleaning removes this barrier, allowing disinfectants to work effectively.</p>
           </div>
@@ -79,13 +79,13 @@
 
     <!-- CARD 1 -->
     <div class="card-block hidden" id="card-1">
-      <div class="flip-card w-full max-w-md overflow-hidden mx-auto">
+      <div class="flip-card w-full max-w-xl overflow-hidden mx-auto">
         <div class="flip-card-inner">
-          <div class="flip-card-front bg-[#F2F2F2] text-[#532A8C]">
+          <div class="flip-card-front bg-[#F2F2F2] text-[#532A8C] w-full min-w-[350px]">
             <h3 class="text-base font-semibold mb-2">Disinfection Time:</h3>
             <p class="text-sm text-center">Do you allow enough <strong>wet contact time</strong> for disinfectants to work?</p>
           </div>
-          <div class="flip-card-back bg-[#C3ACE8] text-black">
+          <div class="flip-card-back bg-[#C3ACE8] text-black w-full min-w-[350px]">
             <h3 class="text-base font-semibold mb-2">Consider This:</h3>
             <p class="text-sm text-center">Disinfectants need time to kill pathogens. If surfaces dry too fast, they may remain contaminated.</p>
           </div>
@@ -99,13 +99,13 @@
 
     <!-- CARD 2 -->
     <div class="card-block hidden" id="card-2">
-      <div class="flip-card w-full max-w-md overflow-hidden mx-auto">
+      <div class="flip-card w-full max-w-xl overflow-hidden mx-auto">
         <div class="flip-card-inner">
-          <div class="flip-card-front bg-[#F2F2F2] text-[#532A8C]">
+          <div class="flip-card-front bg-[#F2F2F2] text-[#532A8C] w-full min-w-[350px]">
             <h3 class="text-base font-semibold mb-2">Using Barriers:</h3>
             <p class="text-sm text-center">What do you cover with an <strong>impervious barrier</strong>? Why?</p>
           </div>
-          <div class="flip-card-back bg-[#C3ACE8] text-black">
+          <div class="flip-card-back bg-[#C3ACE8] text-black w-full min-w-[350px]">
             <h3 class="text-base font-semibold mb-2">Reflect On:</h3>
             <p class="text-sm text-center">Barriers protect equipment from contamination, especially in hard-to-clean areas.</p>
           </div>
@@ -119,21 +119,21 @@
 
     <!-- CARD 3 -->
     <div class="card-block hidden" id="card-3">
-      <div class="flip-card w-full max-w-md overflow-hidden mx-auto">
+      <div class="flip-card w-full max-w-xl overflow-hidden mx-auto">
         <div class="flip-card-inner">
-          <div class="flip-card-front bg-[#F2F2F2] text-[#532A8C]">
+          <div class="flip-card-front bg-[#F2F2F2] text-[#532A8C] w-full min-w-[350px]">
             <h3 class="text-base font-semibold mb-2">One Improvement:</h3>
             <p class="text-sm text-center">What’s <strong>one thing</strong> you could improve in your infection control routine?</p>
           </div>
-          <div class="flip-card-back bg-[#C3ACE8] text-black">
+          <div class="flip-card-back bg-[#C3ACE8] text-black w-full min-w-[350px]">
             <h3 class="text-base font-semibold mb-2">Your Action:</h3>
             <p class="text-sm text-center">Think of a daily habit—barrier use, wet time, or surface prep—that you can tighten up today.</p>
           </div>
         </div>
       </div>
-      <div class="text-center mt-4">
+      <div class="text-center mt-4 space-x-2">
         <button class="flip-btn font-bold bg-[#532A8C] text-white px-5 py-2 rounded" onclick="flipCard(3)">Flip</button>
-        <p class="text-sm text-gray-600 mt-2">You've reached the end of the activity.</p>
+        <button class="restart-btn hidden font-bold bg-[#532A8C] hover:bg-[#9D8ABB] text-white px-5 py-2 rounded" onclick="restart()">Start Again</button>
       </div>
     </div>
 
@@ -146,8 +146,14 @@
       const card = document.getElementById(`card-${index}`);
       card.classList.add('flipped');
       card.querySelector('.flip-btn').classList.add('hidden');
-      const next = card.querySelector('.next-btn');
-      if (next) next.classList.remove('hidden');
+
+      if (index < 3) {
+        const nextBtn = card.querySelector('.next-btn');
+        if (nextBtn) nextBtn.classList.remove('hidden');
+      } else {
+        const restartBtn = card.querySelector('.restart-btn');
+        if (restartBtn) restartBtn.classList.remove('hidden');
+      }
     }
 
     function nextCard() {
@@ -158,8 +164,19 @@
       const next = document.getElementById(`card-${currentCardIndex}`);
       if (next) next.classList.remove('hidden');
     }
+
+    function restart() {
+      document.getElementById(`card-${currentCardIndex}`).classList.add('hidden');
+      document.getElementById(`card-${currentCardIndex}`).classList.remove('flipped');
+      currentCardIndex = 0;
+      const first = document.getElementById(`card-0`);
+      first.classList.remove('hidden');
+      const flip = first.querySelector('.flip-btn');
+      if (flip) flip.classList.remove('hidden');
+      const restartBtn = first.querySelector('.restart-btn');
+      if (restartBtn) restartBtn.classList.add('hidden');
+    }
   </script>
 
 </body>
 </html>
-
